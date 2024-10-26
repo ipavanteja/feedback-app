@@ -16,8 +16,12 @@ const UserSchema: Schema = new Schema({
   },
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  resetPasswordToken: String,
-  resetPasswordExpires: Date,
+  resetPasswordToken: { type: String },
+  resetPasswordExpires: { type: Date },
+  feedback: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Feedback",
+  },
 });
 
 export default mongoose.model<IUser>("User", UserSchema, "users");

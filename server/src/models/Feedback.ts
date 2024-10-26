@@ -1,21 +1,27 @@
 import mongoose, { Document, Schema } from "mongoose";
 
+export interface IFeedbackContent {
+  message: string;
+  timestamp: Date;
+}
+
 export interface IFeedback extends Document {
-  sender: mongoose.Types.ObjectId;
-  receiver: mongoose.Types.ObjectId;
-  content: string;
-  createdAt: Date;
+  user: mongoose.Types.ObjectId;
+  content: IFeedbackContent[];
 }
 
 const FeedbackSchema: Schema = new Schema({
-  sender: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  receiver: {
+  user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
-  content: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now },
+  content: [
+    {
+      message: { type: String, required: true },
+      timestamp: { type: Date, default: Date.now },
+    },
+  ],
 });
 
 export default mongoose.model<IFeedback>(
