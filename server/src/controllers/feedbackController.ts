@@ -1,11 +1,9 @@
-import express from "express";
-import { auth } from "../middleware/auth";
+import { Response } from "express";
 import Feedback from "../models/Feedback";
 import User from "../models/User";
 
-const router = express.Router();
-
-router.post("/", auth, async (req: any, res) => {
+// Send feedback
+const sendFeedbackController = async (req: any, res: Response) => {
   const { receiverId, content } = req.body;
 
   try {
@@ -29,22 +27,27 @@ router.post("/", auth, async (req: any, res) => {
     await newFeedback.save();
 
     res.json(newFeedback);
+    return;
   } catch (err) {
     console.error(err);
     res.status(500).send("Server error");
+    return;
   }
-});
+};
 
-router.get("/received", auth, async (req: any, res) => {
+// Receive feedback
+const receiveFeedbackController = async (req: any, res: Response) => {
   try {
     const feedback = await Feedback.find({ receiver: req.user.id }).sort({
       createdAt: -1,
     });
     res.json(feedback);
+    return;
   } catch (err) {
     console.error(err);
     res.status(500).send("Server error");
+    return;
   }
-});
+};
 
-export default router;
+export { sendFeedbackController, receiveFeedbackController };
