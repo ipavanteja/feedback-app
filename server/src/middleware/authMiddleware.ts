@@ -14,7 +14,7 @@ export const auth = (
 
   if (!token) {
     res.status(401).json({ msg: "No token, authorization denied" });
-    return; // Ensure the function returns nothing (void)
+    return;
   }
 
   try {
@@ -24,14 +24,14 @@ export const auth = (
     ) as jwt.JwtPayload;
 
     if (typeof decoded === "object" && decoded.id) {
-      req.user = { id: decoded.id as string }; // Ensure 'id' exists and is a string
-      next(); // Continue to the next middleware
+      req.user = { id: decoded.id as string };
+      next();
     } else {
       res.status(401).json({ msg: "Token is not valid" });
-      return; // Ensure the function returns nothing (void)
+      return;
     }
   } catch (err) {
     res.status(401).json({ msg: "Token is not valid" });
-    return; // Ensure the function returns nothing (void)
+    return;
   }
 };

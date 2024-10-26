@@ -1,10 +1,8 @@
-import express from "express";
-import { auth } from "../middleware/auth";
+import { Response } from "express";
 import User from "../models/User";
 
-const router = express.Router();
-
-router.get("/", auth, async (req: any, res) => {
+// Get all users
+const getAllUsers = async (req: any, res: Response) => {
   try {
     const users = await User.find({ _id: { $ne: req.user.id } }).select(
       "-password"
@@ -14,6 +12,6 @@ router.get("/", auth, async (req: any, res) => {
     console.error(err);
     res.status(500).send("Server error");
   }
-});
+};
 
-export default router;
+export default getAllUsers;
